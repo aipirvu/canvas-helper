@@ -1,0 +1,13 @@
+<canvas width="700px" height="400px" class="canvas-demo"
+        [id]="canvasId"
+        [ngClass]="{'translating': isTranslating}"
+        (mousedown)="startMoving($event)"
+        (wheel)="startZooming($event)">
+</canvas>
+
+<br/>
+<code>
+  {{canvasData?.getZoom()}}
+  <br />
+  {{canvasData?.getTranslateMultiplier()}}
+</code>
