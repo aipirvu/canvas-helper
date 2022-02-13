@@ -33,21 +33,26 @@ export class CanvasService {
     const firstPoint = polygon.points[0];
     canvasData.context.lineWidth = 1;
     canvasData.context.beginPath();
-    canvasData.context.moveTo(
-      (firstPoint.x + canvasData.translate.x) * canvasData.getZoom() + canvasData.center.x,
-      (firstPoint.y + canvasData.translate.y) * canvasData.getZoom() + canvasData.center.y
-    );
+    this.moveToPoint(canvasData, firstPoint);
     for (let index = 1; index < polygon.points.length; index++) {
       const point = polygon.points[index];
-      canvasData.context.lineTo(
-        (point.x + canvasData.translate.x) * canvasData.getZoom() + canvasData.center.x,
-        (point.y + canvasData.translate.y) * canvasData.getZoom() + canvasData.center.y
-      );
+      this.lineToPoint(canvasData, point);
     }
-    canvasData.context.lineTo(
-      (firstPoint.x + canvasData.translate.x) * canvasData.getZoom() + canvasData.center.x,
-      (firstPoint.y + canvasData.translate.y) * canvasData.getZoom() + canvasData.center.y
-    );
+    this.lineToPoint(canvasData, firstPoint);
     canvasData.context.stroke();
+  }
+
+  private moveToPoint(canvasData: CanvasData, point: Point): void {
+    canvasData.context.moveTo(
+      point.x * canvasData.getZoom() + canvasData.center.x,
+      point.y * canvasData.getZoom() + canvasData.center.y
+    );
+  }
+
+  private lineToPoint(canvasData: CanvasData, point: Point): void {
+    canvasData.context.lineTo(
+      point.x * canvasData.getZoom() + canvasData.center.x,
+      point.y * canvasData.getZoom() + canvasData.center.y
+    );
   }
 }

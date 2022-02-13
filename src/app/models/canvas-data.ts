@@ -3,10 +3,8 @@ import {Shape} from "./shape";
 
 export class CanvasData {
   public readonly context: CanvasRenderingContext2D;
-  public readonly center: Point;
-  public translate: Point = new Point(0, 0);
+  public center: Point;
   private zoom = 1;
-  private translateMultiplier = 1;
   private readonly shapes: Array<Shape> = new Array<Shape>();
 
   constructor(public readonly canvasElement: HTMLCanvasElement) {
@@ -28,19 +26,13 @@ export class CanvasData {
 
   zoomIn(): void {
     this.zoom += this.zoom * .1;
-    this.translateMultiplier -= this.translateMultiplier * .2
   }
 
   zoomOut(): void {
     this.zoom -= this.zoom * .1;
-    this.translateMultiplier += this.translateMultiplier * .2
   }
 
   getZoom(): number {
     return this.zoom;
-  }
-
-  getTranslateMultiplier(): number {
-    return this.translateMultiplier;
   }
 }

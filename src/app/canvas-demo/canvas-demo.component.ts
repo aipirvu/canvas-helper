@@ -13,7 +13,6 @@ export class CanvasDemoComponent implements OnInit, AfterViewInit {
 
   canvasId = "my-canvas";
   canvasData?: CanvasData;
-  isTranslating = false;
 
   constructor(private canvasService: CanvasService) {
   }
@@ -41,31 +40,24 @@ export class CanvasDemoComponent implements OnInit, AfterViewInit {
     if (!that.canvasData) {
       return;
     }
-    that.isTranslating = true;
-    const originalTranslate = that.canvasData.translate;
     const mouseOriginalPageX = event.pageX;
     const mouseOriginalPageY = event.pageY;
+    const originalCenter = that.canvasData.center;
 
     const mousemoveEventListener = (mouseEvent: MouseEvent) => {
       if (!that.canvasData) {
         return;
       }
-      let translateMultiplier = 1;
-      if (that.canvasData.getZoom() < 1) {
-        // translateMultiplier += that.canvasData.getZoom();
-      } else {
-        // translateMultiplier = - 1 - that.canvasData.getTranslateMultiplier();
-      }
-      const x = originalTranslate.x + (mouseEvent.pageX - mouseOriginalPageX) * translateMultiplier;
-      const y = originalTranslate.y + (mouseEvent.pageY - mouseOriginalPageY) * translateMultiplier;
-      that.canvasData.translate = new Point(x, y);
+      that.canvasData.center = new Point(
+        originalCenter.x + mouseEvent.pageX - mouseOriginalPageX,
+        originalCenter.y + mouseEvent.pageY - mouseOriginalPageY
+      );
       canvasService.draw(that.canvasData);
     }
 
     const mouseupEventListener = () => {
       document.removeEventListener("mousemove", mousemoveEventListener);
       document.removeEventListener("mouseup", mouseupEventListener);
-      that.isTranslating = false;
     }
 
     document.addEventListener("mousemove", mousemoveEventListener);
